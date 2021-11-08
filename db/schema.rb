@@ -10,7 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_08_092931) do
+ActiveRecord::Schema.define(version: 2021_11_08_183823) do
+
+  create_table "dishes", force: :cascade do |t|
+    t.string "name"
+    t.string "ingredients"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id", null: false
+    t.integer "region_id", null: false
+    t.index ["region_id"], name: "index_dishes_on_region_id"
+    t.index ["user_id"], name: "index_dishes_on_user_id"
+  end
+
+  create_table "regions", force: :cascade do |t|
+    t.string "continent"
+    t.string "country"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
@@ -21,4 +40,6 @@ ActiveRecord::Schema.define(version: 2021_11_08_092931) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "dishes", "regions"
+  add_foreign_key "dishes", "users"
 end
