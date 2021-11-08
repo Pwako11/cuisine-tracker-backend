@@ -1,4 +1,4 @@
-class RegionsController < ApplicationController
+class Api::V1::RegionsController < ApplicationController
   before_action :set_region, only: [:show, :update, :destroy]
 
   # GET /regions
@@ -15,7 +15,7 @@ class RegionsController < ApplicationController
 
   # POST /regions
   def create
-    @region = region.new(region_params)
+    @region = Region.new(region_params)
 
     if @region.save
       render json: @region, status: :created, location: @region
@@ -41,7 +41,7 @@ class RegionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_region
-      @region = region.find(params[:id])
+      @region = Region.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
