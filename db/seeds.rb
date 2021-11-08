@@ -8,6 +8,37 @@
 
 
 User.destroy_all
+Region.destroy_all
 
 
 User.create(name: "Patrick", username: "PAkolo", email: "PAkolo@hotmail.com", password: "password")
+
+Region.create!(
+    [
+        {
+            continent: "Africa",
+            country: "Kenya",
+            state: "Mombasa"
+        },
+        {
+            continent:"North America",
+            country:"U.S.A",
+            state:"Maryland"
+        },
+        {
+            continent:"North America",
+            country:"Mexico",
+            state: "Mexico city"
+        },
+        {
+            continent:"Asia",
+            country:"India",
+            state:"New Dheli"
+        }
+    ]
+)
+
+
+puts "after seeding the database:"
+puts "... There are #{User.count} users."
+puts "... There are #{Region.count} Regions."
