@@ -3,14 +3,18 @@ class Api::V1::RegionsController < ApplicationController
 
   # GET /regions
   def index
+
     @regions = Region.all
 
-    render json: @regions
+    serializedRegions = RegionSerializer.new(@regions).serializable_hash.to_json
+
+    render json: serializedRegions
   end
 
   # GET /regions/1
   def show
-    render json: @region
+    serializedRegion = RegionSerializer.new(@region).serializable_hash.to_json
+    render json: serializedRegion
   end
 
   # POST /regions
@@ -18,18 +22,27 @@ class Api::V1::RegionsController < ApplicationController
     @region = Region.new(region_params)
 
     if @region.save
-      render json: @region, status: :created, location: @region
+      serializedRegion = RegionSerializer.new(@region).serializable_hash.to_json
+      render json: serializedRegion, status: :created, location: @region
     else
-      render json: @region.errors, status: :unprocessable_entity
+      error_resp = {
+        error: @region.errors.full_message.to_sentence
+      }
+      render json: error_resp, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /regions/1
   def update
     if @region.update(region_params)
-      render json: @region
+      serializedRegion = RegionSerializer.new(@region).serializable_hash.to_json
+      render json: serializedRegion
     else
-      render json: @region.errors, status: :unprocessable_entity
+      error_resp = {
+        error: @region.errors.full_message.to_sentence
+        
+      }
+      render json: error_resp, status: :unprocessable_entity
     end
   end
 
