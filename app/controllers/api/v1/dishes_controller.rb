@@ -5,12 +5,16 @@ class Api::V1::DishesController < ApplicationController
   def index
     @dishes = Dish.all
 
-    render json: @dishes
+    serializedDishes = DishSerializer.new(@dishes).serializable_hash.to_json
+
+    render json: serializedDishes
   end
 
   # GET /dishes/1
   def show
-    render json: @dish
+    serializedDish = DishSerializer.new(@dish).serializable_hash.to_json
+
+    render json: serializedDish
   end
 
   # POST /dishes
@@ -18,24 +22,38 @@ class Api::V1::DishesController < ApplicationController
     @dish = Dish.new(dish_params)
 
     if @dish.save
-      render json: @dish, status: :created, location: @dish
+      render json: DishSerializer.new(@dish).serializable_hash.to_json, status: :created, location: @dish
     else
-      render json: @dish.errors, status: :unprocessable_entity
+      error_resp = {
+        error: @dish.errors.full_message.to_sentence
+      }
+      render json: error_resp, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /dishes/1
   def update
     if @dish.update(dish_params)
-      render json: @dish
+      serializedDish = DishSerializer.new(@dish).serializable_hash.to_json
+      render json: serializedDish
     else
-      render json: @dish.errors, status: :unprocessable_entity
+      error_resp = {
+        error: @dish.errors.full_message.to_sentence
+      }
+      render json: error_resp, status: :unprocessable_entity
     end
   end
 
   # DELETE /dishes/1
   def destroy
-    @dish.destroy
+    if @dish.destroy
+      render json: {data: "Selected dish was successfully deleted"}, status: :ok
+    else 
+      error_resp = {
+        error: "Dish not found"
+      }
+      render json: error_resp, status: :unprocessable_entity
+    end
   end
 
   private
