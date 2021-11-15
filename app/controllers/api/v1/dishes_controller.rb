@@ -3,15 +3,23 @@ class Api::V1::DishesController < ApplicationController
 
   # GET /dishes
   def index
-    @dishes = Dish.all
+    if logged_in?
 
-    serializedDishes = DishSerializer.new(@dishes).serializable_hash.to_json
+      @dishes = current_user.dishes
 
-    render json: serializedDishes
+      serializedDishes = DishSerializer.new(@dishes).serializable_hash.to_json
+
+      render json: serializedDishes
+    else 
+      render json: {
+        error: "you must be logged in to review recommendations"
+      }
+    end 
   end
 
   # GET /dishes/1
   def show
+
     serializedDish = DishSerializer.new(@dish).serializable_hash.to_json
 
     render json: serializedDish
