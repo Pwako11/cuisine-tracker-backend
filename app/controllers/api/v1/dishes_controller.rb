@@ -12,7 +12,7 @@ class Api::V1::DishesController < ApplicationController
       render json: serializedDishes
     else 
       render json: {
-        error: "you must be logged in to review recommendations"
+        error: "you must be logged in to review more information"
       }
     end 
   end
