@@ -23,7 +23,7 @@ class Api::V1::RegionsController < ApplicationController
 
     if @region.save
       serializedRegion = RegionSerializer.new(@region).serializable_hash.to_json
-      render json: serializedRegion, status: :created, location: @region
+      render json: serializedRegion, status: :created
     else
       error_resp = {
         error: @region.errors.full_message.to_sentence
