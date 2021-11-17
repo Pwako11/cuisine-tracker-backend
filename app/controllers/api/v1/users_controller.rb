@@ -22,8 +22,9 @@ class Api::V1::UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+      session[:user_id] = @user.id
       user_json = UserSerializer.new(@user).serializable_hash.to_json
-      render json: user_json, status: :created, location: @user
+      render json: user_json, status: :created
     else
       error_resp = {
         error: @user.errors.full_message.to_sentence
@@ -58,6 +59,6 @@ class Api::V1::UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:name, :username, :email, :password_digest)
+      params.require(:user).permit(:name, :username, :email, :password)
     end
 end
