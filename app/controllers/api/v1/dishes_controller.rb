@@ -30,7 +30,7 @@ class Api::V1::DishesController < ApplicationController
     @dish = Dish.new(dish_params)
 
     if @dish.save
-      render json: DishSerializer.new(@dish).serializable_hash.to_json, status: :created, location: @dish
+      render json: DishSerializer.new(@dish).serializable_hash.to_json, status: :created
     else
       error_resp = {
         error: @dish.errors.full_message.to_sentence
