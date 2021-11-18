@@ -28,10 +28,14 @@ class Api::V1::DishesController < ApplicationController
   # POST /dishes
   def create
     @dish = Dish.new(dish_params)
+    @region = Region.find_or_create_by(continent: params[:dish][:region][:continent], country: params[:dish][:region][:country], state: params[:dish][:region][:state])
+    @user = current_user[:id]
 
-    byebug 
+    @dish.user_id = @user
+    @dish.region_id = @region[:id]
 
     if @dish.save
+      
       render json: DishSerializer.new(@dish).serializable_hash.to_json, status: :created
     else
       error_resp = {
