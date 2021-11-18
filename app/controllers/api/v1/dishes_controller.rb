@@ -29,6 +29,8 @@ class Api::V1::DishesController < ApplicationController
   def create
     @dish = Dish.new(dish_params)
 
+    byebug 
+
     if @dish.save
       render json: DishSerializer.new(@dish).serializable_hash.to_json, status: :created
     else
@@ -72,6 +74,6 @@ class Api::V1::DishesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def dish_params
-      params.require(:dish).permit(:name, :ingridients)
+      params.require(:dish).permit(:name, :ingredients)
     end
 end
